@@ -86,11 +86,32 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="二叉树后序遍历"><a href="#二叉树后序遍历" class="headerlink" title="二叉树后序遍历"></a>二叉树后序遍历</h2><ul>
+<li>二叉树的后序遍历：按照访问左子树——右子树——根节点的方式遍历这棵树，而在访问左子树或者右子树的时候，我们按照同样的方式遍历，直到遍历完整棵树<h3 id="方法1-–-递归"><a href="#方法1-–-递归" class="headerlink" title="方法1 – 递归"></a>方法1 – 递归</h3></li>
+<li>定义 postorder(root) 表示当前遍历到 root 节点的答案。按照定义，我们只要递归调用 postorder(root-&gt;left) 来遍历 root 节点的左子树，然后递归调用 postorder(root-&gt;right) 来遍历 root 节点的右子树，最后将 root 节点的值加入答案即可，递归终止的条件为碰到空节点</li>
+<li>时间复杂度：O(n)，其中 nn 是二叉搜索树的节点数。每一个节点恰好被遍历一次。</li>
+<li>空间复杂度：O(n)，为递归过程中栈的开销，平均情况下为 O(logn)，最坏情况下树呈现链状，为 O(n)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> postorderTraversal = <span class="function"><span class="keyword">function</span>(<span class="params">root</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [];</span><br><span class="line">    dfs(arr, root);</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dfs</span>(<span class="params">arr, root</span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">root</span>)</span>&#123;</span><br><span class="line">        dfs(arr, root.left);</span><br><span class="line">        dfs(arr, root.right);</span><br><span class="line">        arr.push(root.val);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="方法2-–-迭代"><a href="#方法2-–-迭代" class="headerlink" title="方法2 – 迭代"></a>方法2 – 迭代</h3></li>
+<li>设置栈，先进后出，出的左节点把根节点和右节点加进栈，首先添加根节点再添加右节点，这样可以让右节点先出栈</li>
+<li>时间复杂度：O(n)，其中 nn 是二叉搜索树的节点数。每一个节点恰好被遍历一次。</li>
+<li>空间复杂度：O(n)，为迭代过程中显式栈的开销，平均情况下为 O(logn)，最坏情况下树呈现链状，为 O(n)</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> postorderTraversal = <span class="function"><span class="keyword">function</span>(<span class="params">root</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> stack = [];</span><br><span class="line">    <span class="keyword">let</span> result = [];</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">root</span>)</span>&#123;</span><br><span class="line">        stack.push(root);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">stack.length !== <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">        root = stack.pop();</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">root</span>)</span>&#123;</span><br><span class="line">            stack.push(root);</span><br><span class="line">            stack.push(<span class="literal">null</span>)</span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params">root.right</span>)</span>&#123;</span><br><span class="line">            stack.push(root.right);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params">root.left</span>)</span>&#123;</span><br><span class="line">            stack.push(root.left);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            result.push(stack.pop().val)</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>[1,null,2,3]</li>
+<li>模拟运行</li>
+<li>1</li>
+<li>1,null,2</li>
+<li>1,null,2,null,3</li>
+<li>1,null,2,null,3,null</li>
+<li>3,2,1</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/10/%E4%BA%8C%E5%8F%89%E6%A0%91%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86/" data-id="ckhbai6vd000170hc35yg3dtd" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/11/10/%E4%BA%8C%E5%8F%89%E6%A0%91%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86/" data-id="ckhbajur30001echc25086964" class="article-share-link">Share</a>
       
       
     </footer>
@@ -139,7 +160,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/10/hello-world/" data-id="ckhbai6uv000070hcfnin6wt9" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/11/10/hello-world/" data-id="ckhbajuqs0000echc8fsc88uy" class="article-share-link">Share</a>
       
       
     </footer>
