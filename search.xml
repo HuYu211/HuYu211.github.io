@@ -1,30 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>二叉树前序遍历</title>
-    <url>/2020/11/10/%E4%BA%8C%E5%8F%89%E6%A0%91%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
-    <content><![CDATA[<h2 id="二叉树前序遍历"><a href="#二叉树前序遍历" class="headerlink" title="二叉树前序遍历"></a>二叉树前序遍历</h2><ul>
-<li>给定一个二叉树，返回它的 前序 遍历</li>
-<li>二叉树的前序遍历：按照访问根节点——左子树——右子树的方式遍历这棵树，而在访问左子树或者右子树的时候，我们按照同样的方式遍历，直到遍历完整棵树<h3 id="初始化二叉树"><a href="#初始化二叉树" class="headerlink" title="初始化二叉树"></a>初始化二叉树</h3></li>
-<li>[1,null,2,3]<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">TreeNode</span>(<span class="params">val, left, right</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.val = (val === <span class="literal">undefined</span> ? <span class="number">0</span> : val)</span><br><span class="line">    <span class="built_in">this</span>.left = (left === <span class="literal">undefined</span> ? <span class="literal">null</span> : left)</span><br><span class="line">    <span class="built_in">this</span>.right = (right === <span class="literal">undefined</span> ? <span class="literal">null</span> : right)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> root = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">root.right = <span class="keyword">new</span> TreeNode(<span class="number">2</span>);</span><br><span class="line">root.right.left = <span class="keyword">new</span> TreeNode(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
-<h3 id="方法1-–-递归"><a href="#方法1-–-递归" class="headerlink" title="方法1 – 递归"></a>方法1 – 递归</h3></li>
-<li>按照定义，我们只要首先将 root 节点的值加入答案，然后递归调用 preorder(root.left) 来遍历 root 节点的左子树，最后递归调用 preorder(root.right) 来遍历 root 节点的右子树即可，递归终止的条件为碰到空节点</li>
-<li>时间复杂度：O(n)，其中 n 是二叉树的节点数。每一个节点恰好被遍历一次</li>
-<li>空间复杂度：O(n)，为递归过程中栈的开销，平均情况下为 O(log n)，最坏情况下树呈现链状，为 O(n)<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> preorderTraversal = <span class="function"><span class="keyword">function</span>(<span class="params">root</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [];</span><br><span class="line">    qianxu(root,arr);</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">qianxu</span>(<span class="params">root, arr</span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">root !== <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        arr.push(root.val);</span><br><span class="line">        qianxu(root.left,arr);</span><br><span class="line">        qianxu(root.right,arr)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="方法2-–-迭代"><a href="#方法2-–-迭代" class="headerlink" title="方法2 – 迭代"></a>方法2 – 迭代</h3></li>
-<li>设置栈，先进后出，出的根节点把左右子节点已进栈，首先添加右节点再添加左节点，这样可以让左节点先出栈</li>
-<li>时间复杂度：O(n)，其中 n 是二叉树的节点数。每一个节点恰好被遍历一次</li>
-<li>空间复杂度：O(n)，为迭代过程中显式栈的开销，平均情况下为 O(logn)，最坏情况下树呈现链状，为 O(n)<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> preorderTraversal2 = <span class="function"><span class="keyword">function</span> (<span class="params">root</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> stack = [];</span><br><span class="line">    <span class="keyword">let</span> result = [];</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">root === <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    stack.push(root);</span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">stack.length !== <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> node = stack.pop();</span><br><span class="line">        result.push(node.val);</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">node.right</span>)</span>&#123;</span><br><span class="line">            stack.push(node.right)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">node.left</span>)</span>&#123;</span><br><span class="line">            stack.push(node.left)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>两数之和</title>
+    <url>/2020/11/10/%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
+    <content><![CDATA[<h1 id="给定一个整数数组-nums-和一个目标值-target，请你在该数组中找出和为目标值的那两个整数，并返回他们的数组下标"><a href="#给定一个整数数组-nums-和一个目标值-target，请你在该数组中找出和为目标值的那两个整数，并返回他们的数组下标" class="headerlink" title="给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那两个整数，并返回他们的数组下标"></a>给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那两个整数，并返回他们的数组下标</h1><h2 id="设置初始值"><a href="#设置初始值" class="headerlink" title="设置初始值"></a>设置初始值</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> nums = [<span class="number">2</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">15</span>];</span><br><span class="line"><span class="keyword">let</span> target = <span class="number">9</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法1-–-两个for循环判断相加值是否为target"><a href="#方法1-–-两个for循环判断相加值是否为target" class="headerlink" title="方法1 – 两个for循环判断相加值是否为target"></a>方法1 – 两个for循环判断相加值是否为target</h2><ul>
+<li>时间复杂度：O(N^2)，其中 NN 是数组中的元素数量。最坏情况下数组中任意两个数都要被匹配一次。</li>
+<li>空间复杂度：O(1)<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> twoSum = <span class="function"><span class="keyword">function</span>(<span class="params">nums, target</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [];</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> j = (i+<span class="number">1</span>); j &lt; nums.length; j++</span>)</span>&#123;</span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params">nums[i]+nums[j]==target</span>)</span>&#123;</span><br><span class="line">                arr.push(i);</span><br><span class="line">                arr.push(j);</span><br><span class="line">                <span class="keyword">break</span>;<span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="方法2-–-使用哈希表"><a href="#方法2-–-使用哈希表" class="headerlink" title="方法2 – 使用哈希表"></a>方法2 – 使用哈希表</h2><ol>
+<li>创建一个哈希表，对于每一个 x，我们首先查询哈希表中是否存在 target - x，然后将 x 插入到哈希表中，即可保证不会让 x 和自己匹配</li>
+</ol>
+<ul>
+<li>时间复杂度：O(N)，其中 N 是数组中的元素数量</li>
+<li>空间复杂度：O(N)，其中 N 是数组中的元素数量<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> twoSum = <span class="function"><span class="keyword">function</span>(<span class="params">nums, target</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//新建map结构 &#123;num, index&#125; ,这里num储存target-nums[i]</span></span><br><span class="line">    <span class="keyword">let</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="comment">//如果map里存在target-nums[i],则返回target-nums[i]储存的i与此时的i</span></span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">map.has(nums[i])</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> [map.get(nums[i]),i]</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//如果不存在则设置&#123;target-nums[i],i&#125;</span></span><br><span class="line">            map.set(target-nums[i],i)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
 ]]></content>
       <categories>
-        <category>二叉树算法</category>
+        <category>数组算法</category>
       </categories>
       <tags>
-        <tag>二叉树</tag>
+        <tag>数组</tag>
         <tag>算法</tag>
         <tag>力扣每日一题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>两个数组的交集</title>
+    <url>/2020/11/10/%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E7%9A%84%E4%BA%A4%E9%9B%86/</url>
+    <content><![CDATA[<h2 id="两个数组的交集"><a href="#两个数组的交集" class="headerlink" title="两个数组的交集"></a>两个数组的交集</h2><ul>
+<li>初始化数据<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> nums1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>], nums2 = [<span class="number">2</span>,<span class="number">2</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="方法1-–-两层暴力循环-set集和"><a href="#方法1-–-两层暴力循环-set集和" class="headerlink" title="方法1 – 两层暴力循环+set集和"></a>方法1 – 两层暴力循环+set集和</h3></li>
+<li>时间复杂度：O(nm),其中n为数组1的长度，m为数组2的长度</li>
+<li>空间复杂度：O(n),其中n为结果的长度<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> intersection = <span class="function"><span class="keyword">function</span>(<span class="params">nums1, nums2</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> result = [];</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums1.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> j = <span class="number">0</span>; j &lt; nums2.length; j++</span>)</span>&#123;</span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params">nums1[i] === nums2[j]</span>)</span>&#123;</span><br><span class="line">                result.push(nums1[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; </span><br><span class="line">   result = [...new <span class="built_in">Set</span>(result)];</span><br><span class="line">   <span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="方法2-–-两个set集和"><a href="#方法2-–-两个set集和" class="headerlink" title="方法2 – 两个set集和"></a>方法2 – 两个set集和</h3><ul>
+<li>时间复杂度：O(n+m),其中n为数组1的长度，m为数组2的长度</li>
+<li>空间复杂度：O(n+m),其中n为数组1的长度，m为数组2的长度<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> intersection2 = <span class="function"><span class="keyword">function</span>(<span class="params">nums1, nums2</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> set1 = <span class="keyword">new</span> <span class="built_in">Set</span>(nums1);</span><br><span class="line">    <span class="keyword">let</span> set2 = <span class="keyword">new</span> <span class="built_in">Set</span>(nums2);</span><br><span class="line">    <span class="keyword">return</span> set(set1,set2)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">set</span>(<span class="params">set1, set2</span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">set1.size &gt; set2.size</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> set(set2, set1)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">const</span> num <span class="keyword">of</span> set1</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">set2.has(num)</span>)</span>&#123;</span><br><span class="line">            result.add(num)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [...result];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>数组算法</category>
+      </categories>
+      <tags>
+        <tag>数组</tag>
+        <tag>算法</tag>
+        <tag>力扣每日一题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>两数相加</title>
+    <url>/2020/11/10/%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/</url>
+    <content><![CDATA[<h2 id="两数相加"><a href="#两数相加" class="headerlink" title="两数相加"></a>两数相加</h2><ul>
+<li>给出两个非空的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储一位数字。如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和</li>
+</ul>
+<h3 id="方法1-–-模拟"><a href="#方法1-–-模拟" class="headerlink" title="方法1 – 模拟"></a>方法1 – 模拟</h3><ul>
+<li>我们同时遍历两个链表，逐位计算它们的和，并与当前位置的进位值相加。具体而言，如果当前两个链表处相应位置的数字为 n1,n2，进位值为 carry，则它们的和为 n1+n2+carry（sum）；其中，答案链表处相应位置的数字为 (sum % 10)，而新的进位值为 Int(sum / 10) 。如果两个链表的长度不同，则可以认为长度短的链表的后面有若干个 0 。此外，如果链表遍历结束后，有 carry &gt; 0，还需要在答案链表的后面附加一个节点，节点的值为 carry</li>
+<li>时间复杂度：O(max(m,n))，其中 m,n 为两个链表的长度。我们要遍历两个链表的全部位置，而处理每个位置只需要 O(1) 的时间</li>
+<li>空间复杂度：O(max(m,n))。答案链表的长度最多为较长链表的长度 +1</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> addTwoNumbers = <span class="function"><span class="keyword">function</span>(<span class="params">l1, l2</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> head = <span class="literal">null</span>, tail = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">//初始化carry，用于记录进位</span></span><br><span class="line">    <span class="keyword">let</span> carry = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//循环直到两个链表都指向空</span></span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">l1 || l2</span>)</span>&#123;</span><br><span class="line">        <span class="comment">//如果l1存在则取l1的值，否则为0</span></span><br><span class="line">        <span class="keyword">let</span> num1 = l1 ? l1.val : <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//如果l2存在则取l2的值，否则为0</span></span><br><span class="line">        <span class="keyword">let</span> num2 = l2 ? l2.val : <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//将l1与l2与carry相加</span></span><br><span class="line">        <span class="keyword">let</span> sum = num1 + num2 + carry;</span><br><span class="line">        <span class="comment">//如果head为null，则将head指向tail并且给tail赋值，值为sum余10；</span></span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">!head</span>)</span>&#123;</span><br><span class="line">            head = tail = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//给tail.next赋值，值为sum余10,并让tail指向下一个节点</span></span><br><span class="line">            tail.next = <span class="keyword">new</span> ListNode(sum % <span class="number">10</span>);</span><br><span class="line">            tail = tail.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//取出sum的进位</span></span><br><span class="line">        carry = <span class="built_in">parseInt</span>(sum / <span class="number">10</span>)</span><br><span class="line">        <span class="comment">//如果l1存在则l1指向下一个节点</span></span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">l1</span>)</span>&#123;</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果l2存在则l2指向下一个节点</span></span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">l2</span>)</span>&#123;</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//循环结束时如果进位大于0，则赋值给tail下一个节点</span></span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">carry &gt; <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">        tail.next = <span class="keyword">new</span> ListNode(carry)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>链表算法</category>
+      </categories>
+      <tags>
+        <tag>力扣每日一题</tag>
+        <tag>链表，算法</tag>
       </tags>
   </entry>
   <entry>
@@ -56,7 +108,176 @@
         <category>二叉树算法</category>
       </categories>
       <tags>
+        <tag>算法</tag>
+        <tag>力扣每日一题</tag>
         <tag>二叉树</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二叉树前序遍历</title>
+    <url>/2020/11/10/%E4%BA%8C%E5%8F%89%E6%A0%91%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
+    <content><![CDATA[<h2 id="二叉树前序遍历"><a href="#二叉树前序遍历" class="headerlink" title="二叉树前序遍历"></a>二叉树前序遍历</h2><ul>
+<li>给定一个二叉树，返回它的 前序 遍历</li>
+<li>二叉树的前序遍历：按照访问根节点——左子树——右子树的方式遍历这棵树，而在访问左子树或者右子树的时候，我们按照同样的方式遍历，直到遍历完整棵树<h3 id="初始化二叉树"><a href="#初始化二叉树" class="headerlink" title="初始化二叉树"></a>初始化二叉树</h3></li>
+<li>[1,null,2,3]<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">TreeNode</span>(<span class="params">val, left, right</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.val = (val === <span class="literal">undefined</span> ? <span class="number">0</span> : val)</span><br><span class="line">    <span class="built_in">this</span>.left = (left === <span class="literal">undefined</span> ? <span class="literal">null</span> : left)</span><br><span class="line">    <span class="built_in">this</span>.right = (right === <span class="literal">undefined</span> ? <span class="literal">null</span> : right)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> root = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">root.right = <span class="keyword">new</span> TreeNode(<span class="number">2</span>);</span><br><span class="line">root.right.left = <span class="keyword">new</span> TreeNode(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="方法1-–-递归"><a href="#方法1-–-递归" class="headerlink" title="方法1 – 递归"></a>方法1 – 递归</h3></li>
+<li>按照定义，我们只要首先将 root 节点的值加入答案，然后递归调用 preorder(root.left) 来遍历 root 节点的左子树，最后递归调用 preorder(root.right) 来遍历 root 节点的右子树即可，递归终止的条件为碰到空节点</li>
+<li>时间复杂度：O(n)，其中 n 是二叉树的节点数。每一个节点恰好被遍历一次</li>
+<li>空间复杂度：O(n)，为递归过程中栈的开销，平均情况下为 O(log n)，最坏情况下树呈现链状，为 O(n)<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> preorderTraversal = <span class="function"><span class="keyword">function</span>(<span class="params">root</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [];</span><br><span class="line">    qianxu(root,arr);</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">qianxu</span>(<span class="params">root, arr</span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">root !== <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        arr.push(root.val);</span><br><span class="line">        qianxu(root.left,arr);</span><br><span class="line">        qianxu(root.right,arr)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方法2-–-迭代"><a href="#方法2-–-迭代" class="headerlink" title="方法2 – 迭代"></a>方法2 – 迭代</h3></li>
+<li>设置栈，先进后出，出的根节点把左右子节点已进栈，首先添加右节点再添加左节点，这样可以让左节点先出栈</li>
+<li>时间复杂度：O(n)，其中 n 是二叉树的节点数。每一个节点恰好被遍历一次</li>
+<li>空间复杂度：O(n)，为迭代过程中显式栈的开销，平均情况下为 O(logn)，最坏情况下树呈现链状，为 O(n)<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> preorderTraversal2 = <span class="function"><span class="keyword">function</span> (<span class="params">root</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> stack = [];</span><br><span class="line">    <span class="keyword">let</span> result = [];</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">root === <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    stack.push(root);</span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">stack.length !== <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> node = stack.pop();</span><br><span class="line">        result.push(node.val);</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">node.right</span>)</span>&#123;</span><br><span class="line">            stack.push(node.right)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">node.left</span>)</span>&#123;</span><br><span class="line">            stack.push(node.left)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>二叉树算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>力扣每日一题</tag>
+        <tag>二叉树</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>判断是否是回文链表</title>
+    <url>/2020/11/10/%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%98%AF%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/</url>
+    <content><![CDATA[<h2 id="如何判断链表是不是回文呢？"><a href="#如何判断链表是不是回文呢？" class="headerlink" title="如何判断链表是不是回文呢？"></a>如何判断链表是不是回文呢？</h2><ol>
+<li>找到链表的中间节点</li>
+<li>将链表后半部分反转</li>
+<li>比较链表前半部分和后半部分是否相同</li>
+</ol>
+<h2 id="简单做一个链表"><a href="#简单做一个链表" class="headerlink" title="简单做一个链表"></a>简单做一个链表</h2><ul>
+<li>链表结构为 “1-&gt;2-&gt;2-&gt;1”<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ListNode</span>(<span class="params">val</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.val = val;</span><br><span class="line">    <span class="built_in">this</span>.next = <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> head = <span class="keyword">new</span> ListNode(<span class="string">&#x27;1&#x27;</span>);</span><br><span class="line">head.next = <span class="keyword">new</span> ListNode(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">head.next.next = <span class="keyword">new</span> ListNode(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">head.next.next.next = <span class="keyword">new</span> ListNode(<span class="string">&#x27;1&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="方法1-–-将值复制给数组然后切割数组比对"><a href="#方法1-–-将值复制给数组然后切割数组比对" class="headerlink" title="方法1 – 将值复制给数组然后切割数组比对"></a>方法1 – 将值复制给数组然后切割数组比对</h2><ul>
+<li>此方法为首先的想法，之后发现空间复杂度与时间复杂度都较高，只做一种思想的参考</li>
+</ul>
+<ol>
+<li>遍历链表，将所有的值放入数组中，之后将数组分为两部分</li>
+<li>一个数组部分从index:0到index:Math:floor(arr.length/2)–数组长度一半向下取整</li>
+<li>另一部分数组部分从index:Math:floor(arr.length/2)到末尾</li>
+<li>其中如果数组长度为基数的话忽略最中间的值</li>
+<li>将第二部分的数组翻转然后逐个比对值即可，值不同返回false，否则返回true<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> isPalindrome = <span class="function"><span class="keyword">function</span>(<span class="params">head</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [];</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">head === <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将链表的值全部加入数组</span></span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">head !== <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        arr.push(head.val);</span><br><span class="line">        head = head.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将数组划分为两部分</span></span><br><span class="line">    <span class="keyword">let</span> arr1 = arr.slice(<span class="number">0</span>,<span class="built_in">Math</span>.floor(arr.length/<span class="number">2</span>))</span><br><span class="line">    <span class="keyword">let</span> arr2 = arr.slice(-(<span class="built_in">Math</span>.floor(arr.length/<span class="number">2</span>)))</span><br><span class="line">    <span class="comment">//翻转第二个数组</span></span><br><span class="line">    arr2 = arr2.reverse();</span><br><span class="line">    <span class="comment">//遍历判断两个数组内值是否相同</span></span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr1.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">arr1[i] !== arr2[i]</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="方法2-–-将值复制到数组中后用双指针法"><a href="#方法2-–-将值复制到数组中后用双指针法" class="headerlink" title="方法2 – 将值复制到数组中后用双指针法"></a>方法2 – 将值复制到数组中后用双指针法</h2></li>
+<li>复制链表值到数组列表中</li>
+<li>使用双指针法判断是否为回文</li>
+<li>一个指针指向数组头部，一个指针指向数组尾部</li>
+<li>两个指针同时向数组中间移动，停止条件为头部指针等于或大于尾部指针</li>
+<li>如果指针指向的两个值不相等则返回false，否则返回true </li>
+</ol>
+<ul>
+<li>时间复杂度：O(n)，其中 n 指的是链表的元素个数。<br>第一步： 遍历链表并将值复制到数组中，O(n)。<br>第二步：双指针判断是否为回文，执行了 O(n/2) 次的判断，即 O(n)。</li>
+<li>总的时间复杂度：O(2n) = O(n)。</li>
+<li>空间复杂度：O(n)，其中 n 指的是链表的元素个数，我们使用了一个数组列表存放链表的元素值</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> isPalindrome = <span class="function"><span class="keyword">function</span>(<span class="params">head</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [];</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">head === <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">head !== <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        arr.push(head.val);</span><br><span class="line">        head = head.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//设置i为数组头部，j为数组尾部，循环条件为i&lt;j，i自增，j自减</span></span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>, j = arr.length - <span class="number">1</span>; i &lt; j; i++, j--</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">arr[i] !== arr[j]</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法3-–-递归"><a href="#方法3-–-递归" class="headerlink" title="方法3 – 递归"></a>方法3 – 递归</h2><ol>
+<li>定义一个frontPointer指向第一个节点</li>
+<li>遍历recursivelyCheck函数使currentNode指向最后一个节点（判断currentNode是否为空，为空则返回true，在上一级则开始比对frontPointer与currentNode的值）</li>
+<li>如果值相等则frontPointer指向下一个节点，currentNode返回到上一个节点</li>
+<li>值不相等则层层返回false</li>
+</ol>
+<ul>
+<li>时间复杂度：O(n)，其中 n 指的是链表的大小。</li>
+<li>空间复杂度：O(n)，其中 n 指的是链表的大小。<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> frontPointer;</span><br><span class="line"><span class="keyword">var</span> isPalindrome = <span class="function"><span class="keyword">function</span>(<span class="params">head</span>)</span>&#123;</span><br><span class="line">    frontPointer = head;</span><br><span class="line">    <span class="keyword">return</span> recursivelyCheck(head)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> recursivelyCheck = <span class="function"><span class="keyword">function</span>(<span class="params">currentNode</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//判断传来的节点是否为空，为空则返回true返回上一级</span></span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">currentNode !== <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        <span class="comment">//判断下一级是否已经比对完成，返回true则继续比对，返回false则继续向上级返回false</span></span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">!recursivelyCheck(currentNode.next)</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//比对此节点与frontPointer节点值是否相等</span></span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">currentNode.val !== frontPointer.val</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// frontPointer节点指向下一节点</span></span><br><span class="line">        frontPointer = frontPointer.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>链表算法</category>
+      </categories>
+      <tags>
+        <tag>力扣每日一题</tag>
+        <tag>链表，算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>有多少小于当前数字的数字</title>
+    <url>/2020/11/10/%E6%9C%89%E5%A4%9A%E5%B0%91%E5%B0%8F%E4%BA%8E%E5%BD%93%E5%89%8D%E6%95%B0%E5%AD%97%E7%9A%84%E6%95%B0%E5%AD%97/</url>
+    <content><![CDATA[<h2 id="有多少小于当前数字的数字"><a href="#有多少小于当前数字的数字" class="headerlink" title="有多少小于当前数字的数字"></a>有多少小于当前数字的数字</h2><ul>
+<li>给你一个数组 nums，对于其中每个元素 nums[i]，请你统计数组中比它小的所有数字的数目。换而言之，对于每个 nums[i] 你必须计算出有效的 j 的数量，其中 j 满足 j != i 且 nums[j] &lt; nums[i] 。以数组形式返回答案。</li>
+<li>初始化数组<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> nums = [<span class="number">8</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="方法1-–-暴力循环"><a href="#方法1-–-暴力循环" class="headerlink" title="方法1 – 暴力循环"></a>方法1 – 暴力循环</h3></li>
+<li>对于数组中的每一个元素，我们都遍历数组一次，统计小于当前元素的数的数目</li>
+<li>时间复杂度：O(N^2)，其中 NN 为数组的长度。</li>
+<li>空间复杂度：O(1)。注意我们不计算答案数组的空间占用<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> smallerNumbersThanCurrent = <span class="function"><span class="keyword">function</span>(<span class="params">nums</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> num = [];</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="comment">//初始化数目</span></span><br><span class="line">        <span class="keyword">let</span> sub = <span class="number">0</span>;</span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> j = <span class="number">0</span>; j != i, j &lt; nums.length; j++</span>)</span>&#123;</span><br><span class="line">            <span class="comment">//当j&gt;i时，数目加1</span></span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params">nums[i] &gt; nums[j]</span>)</span>&#123;</span><br><span class="line">                sub++</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        num.push(sub);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方法2-–-快速排序"><a href="#方法2-–-快速排序" class="headerlink" title="方法2 – 快速排序"></a>方法2 – 快速排序</h3></li>
+<li>将数组排序，并记录每一个数在原数组中的位置。对于排序后的数组中的每一个数，我们找出其左侧第一个小于它的数，这样就能够知道数组中小于该数的数量</li>
+<li>时间复杂度：O(N\log N)，其中 N 为数组的长度。排序需要 O(N\log N) 的时间，随后需要 O(N) 时间来遍历。</li>
+<li>空间复杂度：O(N)。因为要额外开辟一个数组<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> smallerNumbersThanCurrent = <span class="function"><span class="keyword">function</span>(<span class="params">nums</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//新建二维数组</span></span><br><span class="line">    <span class="keyword">const</span> data = <span class="keyword">new</span> <span class="built_in">Array</span>(nums.length).fill(<span class="number">0</span>).map(<span class="function"><span class="params">v</span> =&gt;</span> <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">2</span>).fill(<span class="number">0</span>));</span><br><span class="line">    <span class="comment">//给二维数组赋值，第一个为数字，第二个为数组原本下标</span></span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums.length; i++</span>)</span>&#123;</span><br><span class="line">        data[i][<span class="number">0</span>] = nums[i];</span><br><span class="line">        data[i][<span class="number">1</span>] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//按照数字排序</span></span><br><span class="line">    data.sort(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a[<span class="number">0</span>]-b[<span class="number">0</span>]);</span><br><span class="line">    <span class="comment">//新建数组储存结果</span></span><br><span class="line">    <span class="keyword">let</span> ret = <span class="keyword">new</span> <span class="built_in">Array</span>(nums.length);</span><br><span class="line">    <span class="comment">//初始化基准点</span></span><br><span class="line">    <span class="keyword">let</span> prev = -<span class="number">1</span>;</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="comment">//如果基准点是初始值或这个值不等于前一个值，则基准点移动到i</span></span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">prev === -<span class="number">1</span> || data[i][<span class="number">0</span>] !== data[i-<span class="number">1</span>][<span class="number">0</span>]</span>)</span>&#123;</span><br><span class="line">            prev = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//利用二维数组储存的下标赋值结果</span></span><br><span class="line">        ret[data[i][<span class="number">1</span>]] = prev</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方法3-–-计数排序"><a href="#方法3-–-计数排序" class="headerlink" title="方法3 – 计数排序"></a>方法3 – 计数排序</h3></li>
+<li>注意到数组元素的值域为 [0,100][0,100]，所以可以考虑建立一个频次数组 cntcnt ，cnt[i]cnt[i] 表示数字 ii 出现的次数。那么对于数字 ii 而言，小于它的数目就为 cnt[0…i-1]cnt[0…i−1] 的总和</li>
+<li>时间复杂度：O(N + K)，其中 K 为值域大小。需要遍历两次原数组，同时遍历一次频次数组 cnt找出前缀和</li>
+<li>空间复杂度：O(K)。因为要额外开辟一个值域大小的数组</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> smallerNumbersThanCurrent = <span class="function"><span class="keyword">function</span>(<span class="params">nums</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//创建一个长度101的数组</span></span><br><span class="line">    <span class="keyword">const</span> cnt = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">101</span>).fill(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">const</span> n = nums.length;</span><br><span class="line">    <span class="comment">//遍历nums，使大数组中下标为nums值的地方+1</span></span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; ++i</span>)</span>&#123;</span><br><span class="line">        cnt[nums[i]] += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//遍历大数组，从0加到100 </span></span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">1</span>; i &lt;= <span class="number">100</span>; ++i</span>)</span>&#123;</span><br><span class="line">        cnt[i] += cnt[i - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> ret = [];</span><br><span class="line">    <span class="comment">// 将下标为小数组值-1的值提出，就是这个值前有几个数字</span></span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n;++i</span>)</span>&#123;</span><br><span class="line">        ret.push(nums[i] ? cnt[nums[i] - <span class="number">1</span>] : <span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>数组算法</category>
+      </categories>
+      <tags>
+        <tag>数组</tag>
+        <tag>算法</tag>
+        <tag>力扣每日一题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>岛屿的周长</title>
+    <url>/2020/11/10/%E5%B2%9B%E5%B1%BF%E7%9A%84%E5%91%A8%E9%95%BF/</url>
+    <content><![CDATA[<h2 id="岛屿的周长"><a href="#岛屿的周长" class="headerlink" title="岛屿的周长"></a>岛屿的周长</h2><ul>
+<li>初始化数据<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> grid = [[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br></pre></td></tr></table></figure>
+<h3 id="方法1-–-暴力循环-四个方法判断-边界判断"><a href="#方法1-–-暴力循环-四个方法判断-边界判断" class="headerlink" title="方法1 – 暴力循环+四个方法判断+边界判断"></a>方法1 – 暴力循环+四个方法判断+边界判断</h3></li>
+<li>对于一个陆地格子的每条边，它被算作岛屿的周长当且仅当这条边为网格的边界或者相邻的另一个格子为水域。 因此，我们可以遍历每个陆地格子，看其四个方向是否为边界或者水域，如果是则sum+1</li>
+<li>时间复杂度：O(nm)，其中 nn 为网格的高度，m 为网格的宽度。我们需要遍历每个格子</li>
+<li>空间复杂度：O(1)。只需要常数空间存放若干变量</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> islandPerimeter = <span class="function"><span class="keyword">function</span>(<span class="params">grid</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; grid.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> j = <span class="number">0</span>; j &lt; grid[i].length; j++</span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(i+<span class="string">&#x27;+&#x27;</span>+j);</span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params">grid[i][j] === <span class="number">1</span></span>)</span>&#123;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">i !== <span class="number">0</span> &amp;&amp; grid[i-<span class="number">1</span>][j] ===<span class="number">0</span></span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">&#x27;i !== 0&#x27;</span>);</span><br><span class="line">                    sum += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">(i !== grid.length-<span class="number">1</span>) &amp;&amp; grid[i+<span class="number">1</span>][j] === <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">&#x27;i !== length&#x27;</span>);</span><br><span class="line">                    sum += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">j !== <span class="number">0</span> &amp;&amp; grid[i][j-<span class="number">1</span>] === <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">&#x27;j !== 0&#x27;</span>);</span><br><span class="line">                    sum += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">(j !== grid[i].length-<span class="number">1</span>) &amp;&amp; grid[i][j+<span class="number">1</span>] === <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">&#x27;j !== length&#x27;</span>);</span><br><span class="line">                    sum += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">i === <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">&#x27;i+1&#x27;</span>);</span><br><span class="line">                    sum += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">j === <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">&#x27;j+1&#x27;</span>);</span><br><span class="line">                    sum += <span class="number">1</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">i === grid.length-<span class="number">1</span></span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">&#x27;i+1&#x27;</span>);</span><br><span class="line">                    sum += <span class="number">1</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">j === grid[i].length-<span class="number">1</span></span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">&#x27;j+1&#x27;</span>);</span><br><span class="line">                    sum += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="方法2-–-暴力循环-四个方法判断"><a href="#方法2-–-暴力循环-四个方法判断" class="headerlink" title="方法2 – 暴力循环+四个方法判断"></a>方法2 – 暴力循环+四个方法判断</h3><ul>
+<li>对于一个陆地格子的每条边，我们可以把陆地的四条边都加上sum，然后判断他的四条边是否有陆地，有的话则sub+1，最后用sum减去sub得到周长</li>
+<li>时间复杂度：O(nm)，其中 nn 为网格的高度，m 为网格的宽度。我们需要遍历每个格子</li>
+<li>空间复杂度：O(2)。只需要常数空间存放若干变量<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> islandPerimeter = <span class="function"><span class="keyword">function</span>(<span class="params">grid</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> sub = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; grid.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> j = <span class="number">0</span>; j &lt; grid[i].length; j++</span>)</span>&#123;</span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params">grid[i][j] === <span class="number">1</span></span>)</span>&#123;</span><br><span class="line">                sum += <span class="number">4</span>;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">i !== <span class="number">0</span> &amp;&amp; grid[i-<span class="number">1</span>][j] === <span class="number">1</span></span>)</span>&#123;</span><br><span class="line">                    sub += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">(i !== grid.length-<span class="number">1</span>) &amp;&amp; grid[i+<span class="number">1</span>][j] === <span class="number">1</span></span>)</span>&#123;</span><br><span class="line">                    sub += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">j !== <span class="number">0</span> &amp;&amp; grid[i][j-<span class="number">1</span>] === <span class="number">1</span></span>)</span>&#123;</span><br><span class="line">                    sub += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">(j !== grid[i].length-<span class="number">1</span>) &amp;&amp; grid[i][j+<span class="number">1</span>] === <span class="number">1</span></span>)</span>&#123;</span><br><span class="line">                    sub += <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    sum = sum - sub;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>数组算法</category>
+      </categories>
+      <tags>
+        <tag>数组</tag>
+        <tag>算法</tag>
+        <tag>力扣每日一题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>独一无二的出现次数</title>
+    <url>/2020/11/10/%E7%8B%AC%E4%B8%80%E6%97%A0%E4%BA%8C%E7%9A%84%E5%87%BA%E7%8E%B0%E6%AC%A1%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="独一无二的出现次数"><a href="#独一无二的出现次数" class="headerlink" title="独一无二的出现次数"></a>独一无二的出现次数</h2><ul>
+<li>给你一个整数数组 arr，请你帮忙统计数组中每个数的出现次数。如果每个数的出现次数都是独一无二的，就返回 true；否则返回 false。</li>
+<li>初始化<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="方法1-–-使用哈希表"><a href="#方法1-–-使用哈希表" class="headerlink" title="方法1 – 使用哈希表"></a>方法1 – 使用哈希表</h3></li>
+<li>使用map表记录，格式为[数字，数字出现次数]，之后用数组记录下map表中所有数字出现的次数，数组排序后判断数组中是否有重复的数，有则返回false，否则返回true</li>
+<li>时间复杂度：O(N)，其中 N 为数组的长度。遍历原始数组需要 O(N) 时间，而遍历中间过程产生的哈希表又需要 O(N) 的时间，遍历结果数组需要 O(N) 的时间</li>
+<li>空间复杂度：O(N)<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> uniqueOccurrences = <span class="function"><span class="keyword">function</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i　&lt; arr.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">map.has(arr[i])</span>)</span>&#123;</span><br><span class="line">            map.set(arr[i],<span class="built_in">parseInt</span>(map.get(arr[i])+<span class="number">1</span>))</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            map.set(arr[i],<span class="number">1</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> result = [];</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> key <span class="keyword">of</span> map.values()</span>)</span>&#123;</span><br><span class="line">        result.push(key);</span><br><span class="line">    &#125;</span><br><span class="line">    result.sort();</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; result.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">result[i] === result[i+<span class="number">1</span>]</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="方法2-–-哈希表结合Set"><a href="#方法2-–-哈希表结合Set" class="headerlink" title="方法2 – 哈希表结合Set()"></a>方法2 – 哈希表结合Set()</h3><ul>
+<li>使用map表记录，格式为[数字，数字出现次数]，之后用Set对象记录下map表中所有数字出现的次数，由于Set的成员都是唯一的，我们只需比对Set与Map的长度是否一致即可判断次数是否重复</li>
+<li>时间复杂度：O(N)，其中 N 为数组的长度。遍历原始数组需要 O(N) 时间，而遍历中间过程产生的哈希表又需要 O(N) 的时间</li>
+<li>空间复杂度：O(N)<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> uniqueOccurrences = <span class="function"><span class="keyword">function</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt;arr.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">map.has(arr[i])</span>)</span>&#123;</span><br><span class="line">            <span class="comment">//如果map中存在这个数，则将它原本的value取出加1赋值（使用parseInt()确保相加不会出错）</span></span><br><span class="line">            map.set(arr[i],<span class="built_in">parseInt</span>(map.get(arr[i])+<span class="number">1</span>));</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            map.set(arr[i],<span class="number">1</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> times = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> [key, value] <span class="keyword">of</span> map</span>)</span>&#123;</span><br><span class="line">        times.add(value)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> times.size === map.size;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>数组算法</category>
+      </categories>
+      <tags>
+        <tag>数组</tag>
         <tag>算法</tag>
         <tag>力扣每日一题</tag>
       </tags>
@@ -89,9 +310,9 @@
         <category>二叉树算法</category>
       </categories>
       <tags>
-        <tag>二叉树</tag>
         <tag>算法</tag>
         <tag>力扣每日一题</tag>
+        <tag>二叉树</tag>
       </tags>
   </entry>
   <entry>
@@ -122,7 +343,69 @@
         <category>二叉树算法</category>
       </categories>
       <tags>
+        <tag>算法</tag>
+        <tag>力扣每日一题</tag>
         <tag>二叉树</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>视频拼接</title>
+    <url>/2020/11/10/%E8%A7%86%E9%A2%91%E6%8B%BC%E6%8E%A5/</url>
+    <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><ul>
+<li>你将会获得一系列视频片段，这些片段来自于一项持续时长为 T 秒的体育赛事。这些片段可能有所重叠，也可能长度不一,视频片段 clips[i] 都用区间进行表示：开始于 clips[i][0] 并于 clips[i][1] 结束。我们甚至可以对这些片段自由地再剪辑，例如片段 [0, 7] 可以剪切成 [0, 1] + [1, 3] + [3, 7] 三部分,我们需要将这些片段进行再剪辑，并将剪辑后的内容拼接成覆盖整个运动过程的片段（[0, T]）。返回所需片段的最小数目，如果无法完成该任务，则返回 -1</li>
+</ul>
+<h3 id="动态规划–示例数据"><a href="#动态规划–示例数据" class="headerlink" title="动态规划–示例数据"></a>动态规划–示例数据</h3><p>clips = [[0,2],[4,6],[8,10],[1,9],[1,5],[5,9]], T = 10</p>
+<ol>
+<li>排序 clips = [[0,2],[1,5],[1,9],[4,6],[5,9],[8,10]]</li>
+<li>设置dp dp=[0,101,101,101,101,101,101,101,101,101,101] (T+1)</li>
+<li>遍历clips<ol>
+<li>start = 0, end = 2 遍历j(start+1,end)<ol>
+<li>dp[1] = min(dp[1], dp[0] + 1) = min(101, 1) = 1</li>
+<li>dp[2] = min(dp[2], dp[0] + 1) = 1</li>
+</ol>
+</li>
+<li>start = 1, end = 5<ol>
+<li>dp[2] = min(dp[2], dp[1] + 1) = min(101, 2) = 2</li>
+<li>dp[3] = min(dp[3], dp[1] + 1) = 2</li>
+<li>dp[4] = min(dp[4], dp[1] + 1) = 2</li>
+<li>dp[5] = min(dp[5], dp[1] + 1) = 2</li>
+</ol>
+</li>
+<li>start = 1, end = 9<ol>
+<li>dp[2] = min(dp[2], dp[1] + 1) = min(2, 2) = 2</li>
+<li>dp[3-5] = 2</li>
+<li>dp[6] = min(dp[6], dp[1] + 1) = min(101, 2) = 2</li>
+<li>dp[7-9] = 2</li>
+</ol>
+</li>
+<li>start = 4, end = 6<ol>
+<li>dp[5] = min(dp[5], dp[4] + 1) = min(2, 3) = 2</li>
+<li>dp[6] = min(dp[6], dp[4] + 1) = min(2, 3) = 2</li>
+</ol>
+</li>
+<li>start = 5, end = 9<ol>
+<li>dp[6] = min(dp[6], dp[5] + 1) = min(2, 3) = 2</li>
+<li>dp[7-9] = min(2, 3) = 2</li>
+</ol>
+</li>
+<li>start = 8, end = 10<ol>
+<li>dp[9] = min(dp[9], dp[8] + 1) = min(2, 3) = 2</li>
+<li>dp[10] = min(dp[10], dp[8] + 1) = min(101, 3) = 3</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="方法1-–-动态规划"><a href="#方法1-–-动态规划" class="headerlink" title="方法1 – 动态规划"></a>方法1 – 动态规划</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> videoStitching = <span class="function"><span class="keyword">function</span>(<span class="params">clips, T</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//先将数组排序</span></span><br><span class="line">    clips.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(a[<span class="number">0</span>]===b[<span class="number">0</span>])<span class="keyword">return</span> a[<span class="number">1</span>]-b[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">return</span> a[<span class="number">0</span>]-b[<span class="number">0</span>];</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="comment">//创建新数组并赋值为最大</span></span><br><span class="line">    <span class="keyword">let</span> dp = <span class="keyword">new</span> <span class="built_in">Array</span>(T + <span class="number">1</span>).fill(<span class="number">101</span>);</span><br><span class="line">    <span class="comment">//数组第一个值设置为0</span></span><br><span class="line">    dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>; i &lt; clips.length; i++</span>)</span>&#123;</span><br><span class="line">        <span class="comment">//赋值开始与结束值</span></span><br><span class="line">        <span class="keyword">let</span> [start, end] = clips[i];</span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> j = start + <span class="number">1</span>; j &lt;=end; j++</span>)</span>&#123;</span><br><span class="line">            <span class="comment">//判断本片段开始时已走步数加1是否大于现在的步数</span></span><br><span class="line">            dp[j] = <span class="built_in">Math</span>.min(dp[j], dp[start] + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">dp[T] === <span class="number">101</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[T]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>数组算法</category>
+      </categories>
+      <tags>
+        <tag>数组</tag>
         <tag>算法</tag>
         <tag>力扣每日一题</tag>
       </tags>
